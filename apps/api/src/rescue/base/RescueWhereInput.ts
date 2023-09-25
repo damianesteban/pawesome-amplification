@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { AdopterWhereUniqueInput } from "../../adopter/base/AdopterWhereUniqueInput";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
+import { AdoptionListRelationFilter } from "../../adoption/base/AdoptionListRelationFilter";
 import { IntFilter } from "../../util/IntFilter";
 import { StringFilter } from "../../util/StringFilter";
 
@@ -30,6 +31,18 @@ class RescueWhereInput {
     nullable: true,
   })
   adopter?: AdopterWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => AdoptionListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => AdoptionListRelationFilter)
+  @IsOptional()
+  @Field(() => AdoptionListRelationFilter, {
+    nullable: true,
+  })
+  adoptions?: AdoptionListRelationFilter;
 
   @ApiProperty({
     required: false,

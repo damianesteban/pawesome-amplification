@@ -11,14 +11,27 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { AdoptionListRelationFilter } from "../../adoption/base/AdoptionListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
+import { StringFilter } from "../../util/StringFilter";
 import { IntFilter } from "../../util/IntFilter";
 import { RescueListRelationFilter } from "../../rescue/base/RescueListRelationFilter";
 
 @InputType()
 class AdopterWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => AdoptionListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => AdoptionListRelationFilter)
+  @IsOptional()
+  @Field(() => AdoptionListRelationFilter, {
+    nullable: true,
+  })
+  adoptions?: AdoptionListRelationFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,

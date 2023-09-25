@@ -11,12 +11,25 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, ValidateNested, IsOptional } from "class-validator";
-import { RescueCreateNestedManyWithoutAdoptersInput } from "./RescueCreateNestedManyWithoutAdoptersInput";
+import { AdoptionCreateNestedManyWithoutAdoptersInput } from "./AdoptionCreateNestedManyWithoutAdoptersInput";
+import { ValidateNested, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { RescueCreateNestedManyWithoutAdoptersInput } from "./RescueCreateNestedManyWithoutAdoptersInput";
 
 @InputType()
 class AdopterCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AdoptionCreateNestedManyWithoutAdoptersInput,
+  })
+  @ValidateNested()
+  @Type(() => AdoptionCreateNestedManyWithoutAdoptersInput)
+  @IsOptional()
+  @Field(() => AdoptionCreateNestedManyWithoutAdoptersInput, {
+    nullable: true,
+  })
+  adoptions?: AdoptionCreateNestedManyWithoutAdoptersInput;
+
   @ApiProperty({
     required: true,
     type: String,

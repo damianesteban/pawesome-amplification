@@ -13,6 +13,10 @@ import { RescueList } from "./rescue/RescueList";
 import { RescueCreate } from "./rescue/RescueCreate";
 import { RescueEdit } from "./rescue/RescueEdit";
 import { RescueShow } from "./rescue/RescueShow";
+import { AdoptionList } from "./adoption/AdoptionList";
+import { AdoptionCreate } from "./adoption/AdoptionCreate";
+import { AdoptionEdit } from "./adoption/AdoptionEdit";
+import { AdoptionShow } from "./adoption/AdoptionShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -52,6 +56,13 @@ const App = (): React.ReactElement => {
           edit={RescueEdit}
           create={RescueCreate}
           show={RescueShow}
+        />
+        <Resource
+          name="Adoption"
+          list={AdoptionList}
+          edit={AdoptionEdit}
+          create={AdoptionCreate}
+          show={AdoptionShow}
         />
       </Admin>
     </div>

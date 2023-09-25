@@ -10,7 +10,7 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Rescue, Adopter } from "@prisma/client";
+import { Prisma, Rescue, Adoption, Adopter } from "@prisma/client";
 
 export class RescueServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -45,6 +45,17 @@ export class RescueServiceBase {
     args: Prisma.SelectSubset<T, Prisma.RescueDeleteArgs>
   ): Promise<Rescue> {
     return this.prisma.rescue.delete(args);
+  }
+
+  async findAdoptions(
+    parentId: number,
+    args: Prisma.AdoptionFindManyArgs
+  ): Promise<Adoption[]> {
+    return this.prisma.rescue
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .adoptions(args);
   }
 
   async getAdopter(parentId: number): Promise<Adopter | null> {

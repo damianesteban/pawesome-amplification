@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { AdopterWhereUniqueInput } from "../../adopter/base/AdopterWhereUniqueInput";
 import { ValidateNested, IsOptional, IsInt, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { AdoptionCreateNestedManyWithoutRescuesInput } from "./AdoptionCreateNestedManyWithoutRescuesInput";
 
 @InputType()
 class RescueCreateInput {
@@ -28,6 +29,18 @@ class RescueCreateInput {
     nullable: true,
   })
   adopter?: AdopterWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => AdoptionCreateNestedManyWithoutRescuesInput,
+  })
+  @ValidateNested()
+  @Type(() => AdoptionCreateNestedManyWithoutRescuesInput)
+  @IsOptional()
+  @Field(() => AdoptionCreateNestedManyWithoutRescuesInput, {
+    nullable: true,
+  })
+  adoptions?: AdoptionCreateNestedManyWithoutRescuesInput;
 
   @ApiProperty({
     required: true,
