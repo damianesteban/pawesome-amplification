@@ -25,3 +25,4 @@ jobs:
             "README.md"
             "assets/*"
             "package-lock.json"
+            "test-service-admin/**/**"
