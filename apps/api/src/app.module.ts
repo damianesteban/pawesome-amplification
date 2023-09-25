@@ -3,6 +3,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { MorganInterceptor, MorganModule } from "nest-morgan";
 import { AdopterModule } from "./adopter/adopter.module";
 import { RescueModule } from "./rescue/rescue.module";
+import { AdoptionModule } from "./adoption/adoption.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -16,6 +17,7 @@ import { GraphQLModule } from "@nestjs/graphql";
   imports: [
     AdopterModule,
     RescueModule,
+    AdoptionModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

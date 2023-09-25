@@ -8,17 +8,29 @@ generator client {
 }
 
 model Adopter {
-  email String   @unique
-  id    Int      @id @id @default(autoincrement()) @default(autoincrement())
-  name  String
-  pets  Rescue[]
+  adoptions Adoption[]
+  email     String     @unique
+  id        Int        @id @id @default(autoincrement()) @default(autoincrement())
+  name      String
+  pets      Rescue[]
 }
 
 model Rescue {
-  adopter   Adopter? @relation(fields: [adopterId], references: [id])
+  adopter   Adopter?   @relation(fields: [adopterId], references: [id])
   adopterId Int?
+  adoptions Adoption[]
   age       Int
-  id        Int      @id @id @default(autoincrement()) @default(autoincrement())
+  id        Int        @id @id @default(autoincrement()) @default(autoincrement())
   name      String
   species   String
+}
+
+model Adoption {
+  adopter   Adopter? @relation(fields: [adopterId], references: [id])
+  adopterId Int?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  rescue    Rescue?  @relation(fields: [rescueId], references: [id])
+  rescueId  Int?
+  updatedAt DateTime @updatedAt
 }

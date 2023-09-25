@@ -20,6 +20,8 @@ import { AdopterCountArgs } from "./AdopterCountArgs";
 import { AdopterFindManyArgs } from "./AdopterFindManyArgs";
 import { AdopterFindUniqueArgs } from "./AdopterFindUniqueArgs";
 import { Adopter } from "./Adopter";
+import { AdoptionFindManyArgs } from "../../adoption/base/AdoptionFindManyArgs";
+import { Adoption } from "../../adoption/base/Adoption";
 import { RescueFindManyArgs } from "../../rescue/base/RescueFindManyArgs";
 import { Rescue } from "../../rescue/base/Rescue";
 import { AdopterService } from "../adopter.service";
@@ -97,6 +99,20 @@ export class AdopterResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Adoption], { name: "adoptions" })
+  async resolveFieldAdoptions(
+    @graphql.Parent() parent: Adopter,
+    @graphql.Args() args: AdoptionFindManyArgs
+  ): Promise<Adoption[]> {
+    const results = await this.service.findAdoptions(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 
   @graphql.ResolveField(() => [Rescue], { name: "pets" })

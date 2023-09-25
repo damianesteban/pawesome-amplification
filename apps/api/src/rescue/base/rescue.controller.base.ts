@@ -23,6 +23,9 @@ import { RescueWhereUniqueInput } from "./RescueWhereUniqueInput";
 import { RescueFindManyArgs } from "./RescueFindManyArgs";
 import { RescueUpdateInput } from "./RescueUpdateInput";
 import { Rescue } from "./Rescue";
+import { AdoptionFindManyArgs } from "../../adoption/base/AdoptionFindManyArgs";
+import { Adoption } from "../../adoption/base/Adoption";
+import { AdoptionWhereUniqueInput } from "../../adoption/base/AdoptionWhereUniqueInput";
 
 export class RescueControllerBase {
   constructor(protected readonly service: RescueService) {}
@@ -177,5 +180,92 @@ export class RescueControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/adoptions")
+  @ApiNestedQuery(AdoptionFindManyArgs)
+  async findManyAdoptions(
+    @common.Req() request: Request,
+    @common.Param() params: RescueWhereUniqueInput
+  ): Promise<Adoption[]> {
+    const query = plainToClass(AdoptionFindManyArgs, request.query);
+    const results = await this.service.findAdoptions(params.id, {
+      ...query,
+      select: {
+        adopter: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        id: true,
+
+        rescue: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/adoptions")
+  async connectAdoptions(
+    @common.Param() params: RescueWhereUniqueInput,
+    @common.Body() body: AdoptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      adoptions: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/adoptions")
+  async updateAdoptions(
+    @common.Param() params: RescueWhereUniqueInput,
+    @common.Body() body: AdoptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      adoptions: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/adoptions")
+  async disconnectAdoptions(
+    @common.Param() params: RescueWhereUniqueInput,
+    @common.Body() body: AdoptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      adoptions: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

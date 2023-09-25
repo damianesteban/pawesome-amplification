@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Adopter } from "../../adopter/base/Adopter";
 import { ValidateNested, IsOptional, IsInt, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { Adoption } from "../../adoption/base/Adoption";
 
 @ObjectType()
 class Rescue {
@@ -25,6 +26,15 @@ class Rescue {
   @Type(() => Adopter)
   @IsOptional()
   adopter?: Adopter | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Adoption],
+  })
+  @ValidateNested()
+  @Type(() => Adoption)
+  @IsOptional()
+  adoptions?: Array<Adoption>;
 
   @ApiProperty({
     required: true,

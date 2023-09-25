@@ -11,12 +11,22 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsInt, ValidateNested, IsOptional } from "class-validator";
-import { Rescue } from "../../rescue/base/Rescue";
+import { Adoption } from "../../adoption/base/Adoption";
+import { ValidateNested, IsOptional, IsString, IsInt } from "class-validator";
 import { Type } from "class-transformer";
+import { Rescue } from "../../rescue/base/Rescue";
 
 @ObjectType()
 class Adopter {
+  @ApiProperty({
+    required: false,
+    type: () => [Adoption],
+  })
+  @ValidateNested()
+  @Type(() => Adoption)
+  @IsOptional()
+  adoptions?: Array<Adoption>;
+
   @ApiProperty({
     required: true,
     type: String,
