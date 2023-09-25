@@ -1,6 +1,8 @@
 name: Robin AI Reviewer
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
     types:
